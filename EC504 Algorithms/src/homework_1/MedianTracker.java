@@ -4,20 +4,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
-public class RunningMedian {
+public class MedianTracker {
 	//long[] values = new long[1];
-	ArrayList<Long> values = new ArrayList<>();
-	int count = 0;
+	ArrayList<Long> values;
+	int count;
 	boolean VERBOSE_MODE = false;
-	float lastMedian = 0;
+	float lastMedian;
 
-	RunningMedian() {
-	}
-
-	RunningMedian(boolean verbose) {
-		if (verbose) {
-			VERBOSE_MODE = true;
-		}
+	MedianTracker(){
+		count = 0;
+		lastMedian = 0;
+		values = new ArrayList();
 	}
 	
 	public void setVerbose(boolean enable){
@@ -98,7 +95,7 @@ public class RunningMedian {
 
 	long[] placeValueBinarySearch(long newVal, long[] allValues) {
 		if (VERBOSE_MODE) {
-			if (count % 1000 == 0) {
+			if (count % 100000 == 0) {
 				System.out.println("Placing value: " + count + 1);
 			}
 		}
@@ -113,7 +110,7 @@ public class RunningMedian {
 	
 	void placeValueBinarySearch(long newVal, ArrayList<Long> valueList){
 		if (VERBOSE_MODE) {
-			if (count % 1000 == 0) {
+			if (count % 100000 == 0) {
 				System.out.println("Placing value: " + (count + 1));
 			}
 		}
@@ -151,7 +148,7 @@ public class RunningMedian {
 	public boolean isEven() {
 		if (count == 0) {
 			return false;
-		} else if (count % 2 == 0) {
+		} else if ((count & 1) == 0) {
 			return true;
 		} else
 			return false;
@@ -198,13 +195,6 @@ public class RunningMedian {
 			System.out.print(valueList.get(i) + ", ");
 		}
 		System.out.println("");
-	}
-
-	public void put(long newVal, boolean verbose) {
-		if (verbose) {
-			put(newVal);
-		} else
-			put(newVal);
 	}
 
 }
