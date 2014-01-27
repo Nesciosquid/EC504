@@ -19,12 +19,5 @@ public class MedianTrackerTestCase {
 			m.put(start-i);
 		}
 	}
-	
-	/* This is dumb, since I can't assert a random number! */
-	public static void addRandom(MedianTracker m, long high, int number){
-		for (int i = 0; i < number; i ++){
-			m.put((long)(double)Math.random()*high);
-		}
-	}
 
 }

@@ -23,6 +23,18 @@ public class MedianTrackerRedux {
 		maxSize = size;
 		values = new ArrayList<Long>(maxSize);
 	}
+	
+	public long getCount(){
+		return count;
+	}
+	
+	public long getSize(){
+		return values.size();
+	}
+	
+	public long getMaxSize(){
+		return maxSize;
+	}
 
 	public void setVerboseMode(boolean state) {
 		verbose = state;
@@ -30,6 +42,10 @@ public class MedianTrackerRedux {
 
 	public void setSize(int newSize) {
 		maxSize = newSize;
+	}
+	
+	public long peek(){
+		return values.get(values.size()-1);
 	}
 
 	private boolean listTooBig() {
@@ -73,6 +89,7 @@ public class MedianTrackerRedux {
 		} else {
 			return 0;
 		}
+		
 	}
 
 	/* Clean up this conditional statement! */
@@ -97,6 +114,7 @@ public class MedianTrackerRedux {
 				}
 			}
 		}
+		count++;
 		return getMedian();
 	}
 
@@ -105,6 +123,7 @@ public class MedianTrackerRedux {
 		int newIndex = searchIndex(newVal);
 		if (!listTooBig()) { // list has not yet reached maximum size
 			addValue(newVal, newIndex);
+			count++;
 			return getMedian();
 		} else {
 			int safety = safeToAdd(newVal);
@@ -145,6 +164,7 @@ public class MedianTrackerRedux {
 					}
 				}
 			}
+			count++;
 			return getMedian();
 
 		}
@@ -155,6 +175,7 @@ public class MedianTrackerRedux {
 		if (!listTooBig()) { // list has not yet reached maximum size
 			int newIndex = searchIndex(newVal);
 			addValue(newVal, newIndex);
+			count++;
 			return getMedian();
 		} else {
 			int safety = safeToAdd(newVal);
@@ -218,6 +239,7 @@ public class MedianTrackerRedux {
 				}
 
 			}
+			count++;
 			return getMedian();
 
 		}

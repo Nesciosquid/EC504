@@ -12,6 +12,7 @@ public class MedianTrackerTest {
 	@Before
 	public void setUp() throws Exception {
 		med = new MedianTracker();
+		
 	}
 	
 	@Test
