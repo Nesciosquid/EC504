@@ -6,7 +6,7 @@ import java.util.Collections;
 
 public class MedianTracker {
 	//long[] values = new long[1];
-	ArrayList<Long> values;
+	public ArrayList<Long> values;
 	int count;
 	boolean VERBOSE_MODE = false;
 	float lastMedian;

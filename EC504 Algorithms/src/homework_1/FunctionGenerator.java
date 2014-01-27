@@ -53,7 +53,7 @@ public class FunctionGenerator {
 		if ((ii - 1) <= 0) {
 			return 0;
 		} else {
-			return ii ^ (ii + 1) % (ii - 1);
+			return (ii ^ (ii + 1)) % (ii - 1);
 		}
 	}
 	
