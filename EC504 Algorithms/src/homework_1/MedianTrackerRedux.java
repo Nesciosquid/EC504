@@ -1,7 +1,6 @@
 package homework_1;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 
 public class MedianTrackerRedux {
@@ -77,7 +76,32 @@ public class MedianTrackerRedux {
 	}
 
 	/* Clean up this conditional statement! */
-	public float put(long newVal) {
+	public float put3(long newVal) {
+		// list has not yet reached maximum size
+		int safety = safeToAdd(newVal);
+		if (safety == 1) { // new value is larger than max value previously
+							// thrown away
+			shiftMedRight();
+		} else if (safety == -1) { // new value is smaller than min value
+									// previously thrown away
+			shiftMedLeft();
+		} else {
+			int newIndex = searchIndex(newVal);
+			addValue(newVal, newIndex);
+			if (values.size() >= maxSize){
+				if (medianOffset() <= 0){
+					dropRight();
+				}
+				else {
+					dropLeft();
+				}
+			}
+		}
+		return getMedian();
+	}
+
+	/* Clean up this conditional statement! */
+	public float put2(long newVal) {
 		int newIndex = searchIndex(newVal);
 		if (!listTooBig()) { // list has not yet reached maximum size
 			addValue(newVal, newIndex);
@@ -91,7 +115,59 @@ public class MedianTrackerRedux {
 										// previously thrown away
 				shiftMedLeft();
 			} else {
-				if (medianOffset() == 0) {
+				int off = medianOffset();
+				int currentSize = values.size();
+				if (newIndex == currentSize && off <= 0) {
+					maxLost = newVal;
+					droppingRight = true;
+					shiftMedRight();
+				} else if (newIndex == currentSize - 1 && off <= 0) {
+					maxLost = values.get(values.size() - 1);
+					values.set(values.size() - 1, newVal);
+					shiftMedRight();
+					droppingRight = true;
+				} else if (newIndex == 1 && off >= 0) {
+					minLost = values.get(0);
+					values.set(0, newVal);
+					droppingLeft = true;
+					shiftMedLeft();
+				} else if (newIndex == 0 && off >= 0) {
+					minLost = newVal;
+					shiftMedLeft();
+					droppingLeft = true;
+				} else {
+					addValue(newVal, newIndex);
+					shiftMedRight();
+					if (medianOffset() <= 0) {
+						dropRight();
+					} else {
+						dropLeft();
+					}
+				}
+			}
+			return getMedian();
+
+		}
+	}
+
+	/* Clean up this conditional statement! */
+	public float put(long newVal) {
+		if (!listTooBig()) { // list has not yet reached maximum size
+			int newIndex = searchIndex(newVal);
+			addValue(newVal, newIndex);
+			return getMedian();
+		} else {
+			int safety = safeToAdd(newVal);
+			if (safety == 1) { // new value is larger than max value previously
+								// thrown away
+				shiftMedRight();
+			} else if (safety == -1) { // new value is smaller than min value
+										// previously thrown away
+				shiftMedLeft();
+			} else {
+				int newIndex = searchIndex(newVal);
+				int off = medianOffset();
+				if (off == 0) {
 					if (newIndex == values.size()) {
 						shiftMedRight();
 						droppingRight = true;
@@ -115,7 +191,7 @@ public class MedianTrackerRedux {
 							dropRight();
 						}
 					}
-				} else if (medianOffset() == 1) {
+				} else if (off == 1) {
 					if (newIndex == 1) {
 						values.set(0, newVal);
 						shiftMedLeft();
@@ -142,8 +218,8 @@ public class MedianTrackerRedux {
 				}
 
 			}
-				return getMedian();
-			
+			return getMedian();
+
 		}
 	}
 
@@ -161,10 +237,10 @@ public class MedianTrackerRedux {
 			System.out.println("YOU ARE SO FUCKED!");
 			return -1;
 		} else {
-		if (medIndexLeft == medIndexRight) {
-			return values.get(medIndexLeft); 
-		} else
-			return (values.get(medIndexLeft) + values.get(medIndexRight)) / 2f;
+			if (medIndexLeft == medIndexRight) {
+				return values.get(medIndexLeft);
+			} else
+				return (values.get(medIndexLeft) + values.get(medIndexRight)) / 2f;
 		}
 	}
 
@@ -185,9 +261,9 @@ public class MedianTrackerRedux {
 	}
 
 	private int safeToAdd(long newVal) {
-		if (droppingRight && newVal >= maxLost) {
+		if (droppingRight && newVal > maxLost) {
 			return 1;
-		} else if (droppingLeft && newVal <= minLost) {
+		} else if (droppingLeft && newVal < minLost) {
 			return -1;
 		} else {
 			return 0;
@@ -198,9 +274,7 @@ public class MedianTrackerRedux {
 		if (!droppingLeft) {
 			droppingLeft = true;
 		}
-		if (minLost < values.get(0)) {
-			minLost = values.get(0);
-		}
+		minLost = values.get(0);
 		values.remove(0);
 		shiftMedLeft();
 		shiftMedLeft();
@@ -209,9 +283,6 @@ public class MedianTrackerRedux {
 	private void dropRight() {
 		if (!droppingRight) {
 			droppingRight = true;
-		}
-		if (maxLost > values.get(values.size() - 1)) {
-			maxLost = values.get(values.size() - 1);
 		}
 		maxLost = values.get(values.size() - 1);
 		values.remove(values.size() - 1);
