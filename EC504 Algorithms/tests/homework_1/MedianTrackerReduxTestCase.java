@@ -66,7 +66,7 @@ public class MedianTrackerReduxTestCase {
 		System.out.println("Time: " + currentTime);
 		System.out.println("Elapsed: " + (int)elapsed/(1000*60) + " minutes");
 		System.out.println("Operations remaining: " + remaining);
-		System.out.println("peed: " + (long)newSpeed *1000 + " ops/second");
+		System.out.println("Speed: " + (long)newSpeed *1000 + " ops/second");
 		System.out.println("Est. time remaining: " + (int)timeRemaining/(1000*60) + " minutes.");
 		System.out.println("====================================================================");
 	}
