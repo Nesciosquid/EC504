@@ -1,10 +1,6 @@
-package homework_1;
+package homework_1_3;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.math.*;
-
-public class FunctionGenerator {
+public class FunctionGenerator_Aaron {
 	
 	public long calcSet_1_3_i(long ii){
 		return (ii ^ (ii<<1));
